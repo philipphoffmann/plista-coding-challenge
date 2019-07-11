@@ -1,0 +1,37 @@
+version: '3'
+services:
+  webserver:
+    image: openjdk:8-jdk-alpine
+    ports:
+      - 8080:8080
+    volumes:
+      - ./random-stream-webserver.jar:/build/random-stream-webserver.jar
+      - ./index.html:/build/index.html
+    working_dir: /build
+    command: java -jar /build/random-stream-webserver.jar
+    stdin_open: true
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'pass'
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'pass'
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+
+  notebook:
+    depends_on:
+      - mysql
+      - webserver
+    build:
+      context: notebook
+    environment:
+      JUPYTER_ENABLE_LAB: 'yes'
+    ports:
+      - 8888:8888
+    volumes:
+      - ./notebook/persist:/home/jovyan

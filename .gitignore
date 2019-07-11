@@ -1,0 +1,9 @@
+.DS_Store
+.idea
+target/
+mysql/
+notebook/persist/.ipynb_checkpoints
+notebook/persist/.ipython
+notebook/persist/.ijupyter
+notebook/persist/.jupyter
+notebook/persist/.local
